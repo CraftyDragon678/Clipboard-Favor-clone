@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ClipboardCavor
 {
@@ -48,7 +49,7 @@ namespace ClipboardCavor
 
         private void OnClipboardChange(object sender, EventArgs e)
         {
-            Thread thread = new Thread(() =>
+            /*Thread thread = new Thread(() =>
             {
                 if (Clipboard.ContainsText())
                 {
@@ -59,13 +60,36 @@ namespace ClipboardCavor
                         Debug.WriteLine(text);
 
                         Overlay win = new Overlay(formerText, left, top);
-                        win.Dispatcher.Invoke(delegate { 
+                        *//*win.Dispatcher.Invoke(delegate { 
                             win.Show();
                             Thread.Sleep(5000);
                             win.Close();
+                        });*//*
+                        win.Dispatcher.Invoke(() => win.Show());
+                        Thread.Sleep(5000);
+                        win.Dispatcher.Invoke(() => win.Close());
+
+                        *//*win.Dispatcher.Invoke(delegate { win.Close(); });*//*
+                    }
+                }
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();*/
+
+            Thread thread = new Thread(() =>
+            {
+                if (Clipboard.ContainsText())
+                {
+                    string text = Clipboard.GetText();
+                    if (formerText != text)
+                    {
+                        formerText = text;
+                        Debug.WriteLine(text);
+
+                        Dispatcher.Invoke(() => { 
+                            Overlay win = new Overlay(formerText, left, top);
+                            win.Show(); 
                         });
-                        
-                        /*win.Dispatcher.Invoke(delegate { win.Close(); });*/
                     }
                 }
             });

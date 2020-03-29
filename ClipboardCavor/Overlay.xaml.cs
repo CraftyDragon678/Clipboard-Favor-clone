@@ -30,11 +30,6 @@ namespace ClipboardCavor
             str.Text = text;
             Left = left;
             Top = top;
-
-            /*DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(10000d);
-            timer.Tick += TimerTick;
-            timer.Start();*/
         }
 
         private void TimerTick(object sender, EventArgs e) {
@@ -52,6 +47,12 @@ namespace ClipboardCavor
 
             exStyle |= (int)HookUtil.ExtendedWindowStyles.WS_EX_TOOLWINDOW;
             HookUtil.SetWindowLong(wndHelper.Handle, (int)HookUtil.GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
+
+
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(5d);
+            timer.Tick += TimerTick;
+            timer.Start();
         }
     }
 }
