@@ -25,6 +25,8 @@ namespace ClipboardCavor
     public partial class MainWindow : Window
     {
         String formerText;
+        double left;
+        double top;
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +36,14 @@ namespace ClipboardCavor
         {
             var windowCM = new ClipboardManager(this);
             windowCM.ClipboardChanged += OnClipboardChange;
+
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
+            double screenHeight = SystemParameters.PrimaryScreenHeight;
+            double windowWidth = 400;
+            double windowHeight = 150;
+
+            left = (screenWidth - windowWidth) / 2;
+            top = screenHeight - windowHeight - 100;
         }
 
         private void OnClipboardChange(object sender, EventArgs e)
@@ -42,16 +52,20 @@ namespace ClipboardCavor
             {
                 if (Clipboard.ContainsText())
                 {
-                    String text = Clipboard.GetText();
-                    if (formerText != text)
+                    string text = Clipboard.GetText();
+                    if (formerText != text || true)
                     {
                         formerText = text;
                         Debug.WriteLine(text);
 
-                        Overlay win = new Overlay(formerText);
-                        win.Dispatcher.Invoke(new Action(() => win.Show()));
-                        Thread.Sleep(5000);
-                        win.Dispatcher.Invoke(new Action(() => win.Close()));
+                        Overlay win = new Overlay(formerText, left, top);
+                        win.Dispatcher.Invoke(delegate { 
+                            win.Show();
+                            Thread.Sleep(5000);
+                            win.Close();
+                        });
+                        
+                        /*win.Dispatcher.Invoke(delegate { win.Close(); });*/
                     }
                 }
             });
