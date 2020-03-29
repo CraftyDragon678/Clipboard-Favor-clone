@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:ClipboardCavor"
         mc:Ignorable="d"
         Title="MainWindow" Height="540.667" Width="779.333"
-        Loaded="Window_Loaded" >
+        Loaded="Window_Loaded" WindowStyle="None" AllowsTransparency="True">
     <Grid>
-        <Image Source="Logo.png" Stretch="Uniform" Margin="0,0,0,445"  />
+        <Image Source="/Resources/Logo.png" Stretch="Uniform" Margin="0,0,0,445"  />
     </Grid>
 </Window>
