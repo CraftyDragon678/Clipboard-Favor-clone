@@ -14,6 +14,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ClipboardCavor
 {
@@ -22,11 +23,25 @@ namespace ClipboardCavor
     /// </summary>
     public partial class Overlay : Window
     {
-        public Overlay(String text)
+        public Overlay(String text, double left, double top)
         {
             InitializeComponent();
 
             str.Text = text;
+            Left = left;
+            Top = top;
+
+            /*DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(10000d);
+            timer.Tick += TimerTick;
+            timer.Start();*/
+        }
+
+        private void TimerTick(object sender, EventArgs e) {
+            DispatcherTimer timer1 = (DispatcherTimer)sender;
+            timer1.Stop();
+            timer1.Tick -= TimerTick;
+            Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
