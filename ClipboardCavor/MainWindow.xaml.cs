@@ -80,14 +80,20 @@ namespace ClipboardCavor
             {
                 if (Clipboard.ContainsText())
                 {
-                    string text = Clipboard.GetText();
-                    if (formerText != text)
+                    string text = Clipboard.GetText(TextDataFormat.Text);
+                    if (formerText != text && text.Split('\n').Length == 1)
                     {
                         formerText = text;
                         Debug.WriteLine(text);
+                        string displayText = text;
+
+                        if (Calculator.IsFormula(text))
+                        {
+                            displayText = text + " = " + Calculator.Calcutate(text);
+                        }
 
                         Dispatcher.Invoke(() => { 
-                            Overlay win = new Overlay(formerText, left, top);
+                            Overlay win = new Overlay(displayText, left, top);
                             win.Show(); 
                         });
                     }
